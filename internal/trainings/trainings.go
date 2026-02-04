@@ -29,11 +29,17 @@ func (t *Training) Parse(datastring string) (err error) {
 	if errS != nil {
 		return errors.New("Нулевой индекс парсинга не соотвествует типу int")
 	}
+	if steps <= 0 {
+		return errors.New("Неверно переданное значение шагов")
+	}
 	t.Steps = steps
 	t.TrainingType = str[1]
 	ti, errT := time.ParseDuration(str[2])
 	if errT != nil {
 		return errors.New("ошибка преобразования времени в строку")
+	}
+	if ti <= 0 {
+		return errors.New("Неверно переданное значение времени")
 	}
 	t.Duration = ti
 	return nil
@@ -61,7 +67,7 @@ func (t Training) ActionInfo() (string, error) {
 		return "", errors.New("неизвестный тип тренировки")
 	}
 
-	return fmt.Sprintf("Тип тренировки: %s\nДлительность: %s ч.\nДистанция: %.2f км.\nСкорость: %.2f км/ч\nСожгли калорий: %.2f\n",
-		t.TrainingType, t.Duration, d, srSpeed, cal), nil
+	return fmt.Sprintf("Тип тренировки: %s\nДлительность: %.2f ч.\nДистанция: %.2f км.\nСкорость: %.2f км/ч\nСожгли калорий: %.2f\n",
+		t.TrainingType, t.Duration.Hours(), d, srSpeed, cal), nil
 
 }

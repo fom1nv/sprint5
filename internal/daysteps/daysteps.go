@@ -28,10 +28,16 @@ func (ds *DaySteps) Parse(datastring string) (err error) {
 	if errS != nil {
 		return errors.New("Неверное значение шагов после парсинга")
 	}
+	if steps <= 0 {
+		return errors.New("Неверное значение шагов после парсинга")
+	}
 	ds.Steps = steps
 	t, errT := time.ParseDuration(str[1])
 	if errT != nil {
 		return errors.New("неверное значение времени после парсинга")
+	}
+	if t <= 0 {
+		return errors.New("Неверное значение времени после парсинга")
 	}
 	ds.Duration = t
 	return nil
